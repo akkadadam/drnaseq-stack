@@ -1,0 +1,61 @@
+name: Interface Definition
+description: Define a new interface for modular components
+title: "[INTERFACE]: "
+labels: ["component:orchestrator", "documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Interface Definition
+        Use this template to define new interfaces for modular components.
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Development Phase
+      description: Which phase does this interface belong to?
+      options:
+        - "Phase 2.5: Reliability Layer"
+        - "Phase 3: Reality Bridge"
+        - "Phase 4: Orchestrator"
+        - "Phase 5: Knowledge Scaleout"
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How urgent is this interface?
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Interface Description
+      description: Describe the purpose and scope of this interface
+      placeholder: This interface will...
+    validations:
+      required: true
+  - type: textarea
+    id: methods
+    attributes:
+      label: Required Methods
+      description: List the methods this interface must define
+      placeholder: |
+        - `method_name(param1, param2)`: Description of what this method does
+        - `another_method()`: Another description
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: List any dependencies for this interface
+      placeholder: |
+        - Blocked by: #XX (description)
+        - Blocks: #YY (description)
+    validations:
+      required: false

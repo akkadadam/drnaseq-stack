@@ -1,0 +1,87 @@
+name: Component Implementation
+description: Implement a new component for the drnaseq-stack
+title: "[COMPONENT]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Component Implementation
+        Use this template to create a new component for the drnaseq-stack.
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Development Phase
+      description: Which phase does this component belong to?
+      options:
+        - "Phase 2.5: Reliability Layer"
+        - "Phase 3: Reality Bridge"
+        - "Phase 4: Orchestrator"
+        - "Phase 5: Knowledge Scaleout"
+    validations:
+      required: true
+  - type: dropdown
+    id: component_type
+    attributes:
+      label: Component Type
+      description: What type of component is this?
+      options:
+        - Logging
+        - Basecaller
+        - Orchestrator
+        - Validation
+        - Benchmark
+        - CI/CD
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How urgent is this component?
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Component Description
+      description: Describe the purpose and functionality of this component
+      placeholder: This component will...
+    validations:
+      required: true
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Implementation Tasks
+      description: List the specific tasks required to implement this component
+      placeholder: |
+        - [ ] Task 1: Description
+        - [ ] Task 2: Description
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: Describe what must be true for this component to be considered complete
+      placeholder: |
+        - Component passes all unit tests
+        - Documentation is complete
+        - Performance meets requirements
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: List any dependencies for this component
+      placeholder: |
+        - Blocked by: #XX (description)
+        - Blocks: #YY (description)
+    validations:
+      required: false
