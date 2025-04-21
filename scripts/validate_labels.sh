@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # validate_labels.sh - Confirm all required labels exist
 
 # Define expected labels by category

@@ -1,0 +1,37 @@
+name: Weekly Digest
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Run at 9 AM every Monday
+  workflow_dispatch:     # Allow manual triggering
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Generate Digest
+        run: |
+          # Create temp directory for digest
+          mkdir -p tmp
+
+          # Check if script exists
+          if [ ! -f ./scripts/generate_weekly_digest.sh ]; then
+            echo "Error: Weekly digest script not found!"
+            exit 1
+          fi
+
+          # Generate digest to a file
+          ./scripts/generate_weekly_digest.sh > tmp/digest.md
+
+          # Get today's date
+          TODAY=$(date +"%Y-%m-%d")
+
+          # Create an issue with the digest
+          gh issue create \
+            --title "Weekly Digest: $TODAY" \
+            --body-file tmp/digest.md \
+            --label "documentation" || echo "Failed to create digest issue."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

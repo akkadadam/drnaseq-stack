@@ -1,12 +1,38 @@
-#!/bin/bash
-# create_milestones.sh
+#!/usr/bin/env bash
+# create_milestones.sh - Create milestones and exit checklists
+set -euo pipefail
 
-# Define milestone data with proper quoting for array keys
-declare -A milestones
-milestones["Phase 2.5: Reliability Layer"]="Establish the reliability framework with interface abstractions, logging, and validation|2024-05-15"
-milestones["Phase 3: Reality Bridge"]="Bridge to production-grade capabilities with POD5 integration and real basecalling|2024-06-15"
-milestones["Phase 4: Orchestrator"]="Implement workflow orchestration and ecosystem integration|2024-07-15"
-milestones["Phase 5: Knowledge Scaleout"]="Documentation, knowledge transfer, and community engagement|2024-08-15"
+# Basic bash version check
+if [ -z "${BASH_VERSION:-}" ]; then
+  echo "This script requires bash. Please run with: bash $(basename "$0")"
+  exit 1
+fi
+
+# Define phases as tuples [name, description, due_date]
+PHASES=(
+  "Phase 2.5: Reliability Layer" 
+  "Establish the reliability framework with interface abstractions, logging, and validation" 
+  "2024-05-15"
+  
+  "Phase 3: Reality Bridge" 
+  "Bridge to production-grade capabilities with POD5 integration and real basecalling" 
+  "2024-06-15"
+  
+  "Phase 4: Orchestrator" 
+  "Implement workflow orchestration and ecosystem integration" 
+  "2024-07-15"
+  
+  "Phase 5: Knowledge Scaleout" 
+  "Documentation, knowledge transfer, and community engagement" 
+  "2024-08-15"
+)
+
+# Allow creating a single milestone by phase
+TARGET_PHASE=""
+if [[ $# -eq 2 && "$1" == "--phase" ]]; then
+  TARGET_PHASE="$2"
+  echo "Creating milestone for Phase $TARGET_PHASE only"
+fi
 
 # Load environment variables if .env exists
 if [ -f .env ]; then
@@ -19,9 +45,19 @@ else
   echo "Using repository information from git config: $REPO_OWNER/$REPO_NAME"
 fi
 
-# Create milestone and exit checklist issue for each phase
-for milestone in "${!milestones[@]}"; do
-  IFS='|' read -r description due_date <<< "${milestones[$milestone]}"
+# Loop through phases
+for ((i=0; i<${#PHASES[@]}; i+=3)); do
+  milestone="${PHASES[$i]}"
+  description="${PHASES[$i+1]}"
+  due_date="${PHASES[$i+2]}"
+  
+  # Extract phase number (e.g., "Phase 2.5: Reliability Layer" -> "2.5")
+  current_phase=$(echo "$milestone" | grep -oE '[0-9]+(\.[0-9]+)?')
+  
+  # Skip if we're targeting a specific phase and this isn't it
+  if [[ -n "$TARGET_PHASE" && "$current_phase" != "$TARGET_PHASE" ]]; then
+    continue
+  fi
   
   echo "Creating milestone: $milestone"
   response=$(gh api \
@@ -35,14 +71,11 @@ for milestone in "${!milestones[@]}"; do
   
   milestone_number=$(echo $response | jq -r '.number')
   
-  # Extract phase number from milestone title (e.g., "Phase 2.5" -> "2.5")
-  phase_number=$(echo $milestone | grep -oE '[0-9]+(\.[0-9]+)?')
-  
   # Create exit checklist issue for this phase
   echo "Creating exit checklist for $milestone"
   gh issue create \
-    --title "[PHASE-EXIT]: Phase $phase_number Completion Checklist" \
-    --body "# Phase $phase_number Exit Checklist
+    --title "[PHASE-EXIT]: Phase $current_phase Completion Checklist" \
+    --body "# Phase $current_phase Exit Checklist
 
 This issue tracks the completion criteria for $milestone.
 
@@ -67,7 +100,7 @@ This issue tracks the completion criteria for $milestone.
 
 This issue should be used during the phase transition to ensure proper completion and handoff." \
     --milestone $milestone_number \
-    --label "documentation,phase:$phase_number"
+    --label "documentation,phase:$current_phase"
 done
 
-echo "All milestones and exit checklists created successfully!"
+echo "Milestone creation completed successfully!"

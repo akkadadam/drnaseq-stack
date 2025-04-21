@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # create_labels.sh - Create all needed labels with consistent formatting
 
 # Print colorful status messages
