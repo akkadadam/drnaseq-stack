@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Print all labels in raw format
 echo "Fetching all labels..."

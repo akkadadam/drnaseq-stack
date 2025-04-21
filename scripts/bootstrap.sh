@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # bootstrap.sh - Quick setup script for drnaseq-stack repository
 
 set -e  # Exit on any error

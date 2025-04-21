@@ -1,0 +1,17 @@
+# Default owners for everything in the repo
+* @akkadadam
+
+# Component-specific owners
+/components/logging/* @LOGGING_OWNER
+/components/basecaller/* @akkadadam
+/components/orchestrator/* @ORCHESTRATOR_OWNER
+/components/validation/* @VALIDATION_OWNER
+/components/benchmark/* @BENCHMARK_OWNER
+/components/cicd/* @CICD_OWNER
+
+# Documentation owners
+/docs/* @akkadadam
+/knowledge/* @akkadadam
+
+# Script owners
+/scripts/* @akkadadam
