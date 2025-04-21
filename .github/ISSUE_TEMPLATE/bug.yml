@@ -1,0 +1,74 @@
+name: Bug Report
+description: Report a bug in the drnaseq-stack
+title: "[BUG]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Bug Report
+        Use this template to report a bug in the drnaseq-stack.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      description: Which component is affected by this bug?
+      options:
+        - Logging
+        - Basecaller
+        - Orchestrator
+        - Validation
+        - Benchmark
+        - CI/CD
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How severe is this bug?
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Describe the bug in detail
+      placeholder: The bug occurs when...
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Provide detailed steps to reproduce the bug
+      placeholder: |
+        1. Run command X
+        2. Use input Y
+        3. Error Z occurs
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should happen instead?
+      placeholder: The system should...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Describe your environment
+      placeholder: |
+        - OS: Ubuntu 22.04
+        - Docker: 24.0.5
+        - Architecture: x86_64
+    validations:
+      required: true

@@ -1,0 +1,76 @@
+name: Phase Exit Checklist
+description: Formalize completion criteria for a project phase
+title: "[PHASE-EXIT]: Phase X.X Completion Checklist"
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Phase Exit Checklist
+        Use this template to formalize the completion criteria for a project phase.
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase
+      description: Which phase is being completed?
+      options:
+        - "Phase 2.5: Reliability Layer"
+        - "Phase 3: Reality Bridge"
+        - "Phase 4: Orchestrator"
+        - "Phase 5: Knowledge Scaleout"
+    validations:
+      required: true
+  - type: textarea
+    id: objectives
+    attributes:
+      label: Phase Objectives
+      description: List the primary objectives for this phase
+      placeholder: |
+        - Objective 1
+        - Objective 2
+    validations:
+      required: true
+  - type: checkboxes
+    id: requirements
+    attributes:
+      label: Exit Requirements
+      description: Requirements that must be met to consider this phase complete
+      options:
+        - label: All critical-path issues are closed
+        - label: Documentation is updated
+        - label: Tests are passing
+        - label: Knowledge artifacts are captured
+        - label: Performance benchmarks are documented
+        - label: Team has conducted phase retrospective
+    validations:
+      required: true
+  - type: textarea
+    id: metrics
+    attributes:
+      label: Success Metrics
+      description: Metrics and KPIs used to measure success
+      placeholder: |
+        - Metric 1: Target value
+        - Metric 2: Target value
+    validations:
+      required: true
+  - type: textarea
+    id: learnings
+    attributes:
+      label: Key Learnings
+      description: Important lessons and insights gained during this phase
+      placeholder: |
+        - Learning 1
+        - Learning 2
+    validations:
+      required: true
+  - type: textarea
+    id: next_phase
+    attributes:
+      label: Next Phase Preparation
+      description: Steps needed to prepare for the next phase
+      placeholder: |
+        - Preparation 1
+        - Preparation 2
+    validations:
+      required: true
