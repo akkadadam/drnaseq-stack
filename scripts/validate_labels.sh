@@ -15,7 +15,11 @@ error() { echo -e "\033[0;31m[ERROR]\033[0m $1"; }
 
 # Get all existing labels
 info "Fetching existing labels..."
-existing_labels=$(gh label list --json name --jq '.[].name' 2>/dev/null || echo "")
+existing_labels=$(gh label list --json name --jq '.[].name')
+
+# Debug: Print all labels to see what we're getting
+echo "DEBUG: All labels found:"
+echo "$existing_labels"
 
 # Check if label commands executed successfully
 if [ -z "$existing_labels" ]; then
@@ -30,10 +34,11 @@ check_labels() {
   local label_type=$1
   shift
   local labels=("$@")
-  
+
   info "Checking $label_type labels..."
   for label in "${labels[@]}"; do
-    if ! echo "$existing_labels" | grep -q "^$label$"; then
+    # More flexible grep pattern with word boundaries
+    if ! echo "$existing_labels" | grep -E "^${label}$" > /dev/null; then
       missing_labels+=("$label")
       warn "  ❌ Missing: $label"
     else
