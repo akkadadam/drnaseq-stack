@@ -1,30 +1,31 @@
-# GitHub Project Views
+# drnaseq-stack GitHub Project Views
 
-This document provides visual references for our GitHub Project views.
+This document provides information about the GitHub Project views configured for this repository.
 
-## By Phase View
-![By Phase View](images/by-phase.png)
+## View Types
 
-*Issues grouped by phase, sorted by priority.*
+### By Phase
+- **Group by**: Phase labels (phase:*)
+- **Sort by**: Priority
+- Used for planning and roadmap tracking
 
-## By Component View
-![By Component View](images/by-component.png)
+### By Component 
+- **Group by**: Component labels (component:*)
+- **Sort by**: Status
+- Used for component-specific work organization
 
-*Issues grouped by component, sorted by status.*
+### By Status
+- **Group by**: Status labels (status:*)
+- **Sort by**: Priority
+- Used for daily progress tracking
 
-## By Status View
-![By Status View](images/by-status.png)
+### By Priority
+- **Group by**: Priority labels (priority:*)
+- **Sort by**: Status
+- Used for resource allocation and triage
 
-*Issues grouped by status, sorted by priority.*
+## Using the Views
 
-## By Priority View
-![By Priority View](images/by-priority.png)
+These views provide multiple perspectives on the same set of issues, making it easier to plan, track, and manage work across different dimensions of the project.
 
-*Issues grouped by priority, sorted by status.*
-
-## Usage Guidelines
-
-- **Planning**: Use the By Phase view for roadmap planning
-- **Daily Work**: Use the By Component view for component-focused development
-- **Progress Tracking**: Use the Status view for standups and progress updates
-- **Prioritization**: Use the Priority view for triage and resource allocation
+For new contributors, start with the "By Status" view to find issues marked as "ready" with appropriate priority levels.

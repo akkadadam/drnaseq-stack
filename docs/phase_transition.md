@@ -1,29 +1,37 @@
-# Phase Transition Process
+# Phase Transition Guide
 
-This document outlines the process for transitioning between phases in the drnaseq-stack project.
+This document describes the process for transitioning between phases in the drnaseq-stack project.
 
-## Phase Exit Checklist
+## Phase Transition Process
 
-Each phase has an exit checklist that must be completed before moving to the next phase. The checklist is created automatically when milestones are set up.
+1. Run the exit checklist for the current phase:
+   ```bash
+   ./scripts/phase_exit.sh X.X
+Where X.X is the phase number (e.g., 2.5, 3, 4, 5)
 
-## Using the Phase Exit Script
+Create the milestone for the next phase:
+bash./scripts/create_milestones.sh --phase Y
+Where Y is the next phase number
+Bootstrap the next phase:
+bash./scripts/bootstrap_phase.sh Y
+Where Y is the next phase number
+Update the README badge:
+bashsed -i '' '1s|^.*Phase-.*-.*)]|[![Phase: Y - Phase Name](https://img.shields.io/badge/Phase-Y%20Phase%20Name-COLOR)]|' README.md
+Replace Y, "Phase Name", and COLOR with appropriate values
+Create/update critical path issues for the new phase
+Generate a new critical path visualization:
+bash./scripts/generate_critical_path.py > meta/critical_path_visualization.md
+gh issue create --title "Critical Path Visualization" --body-file meta/critical_path_visualization.md --label "documentation"
 
-The `phase_exit.sh` script helps validate whether a phase is ready for completion.
 
-### Usage
+Phase Completion Criteria
+Each phase has specific criteria that must be met before transitioning:
 
-```bash
-./scripts/phase_exit.sh --phase 3
-What the Script Does
+All critical path issues closed
+Documentation updated
+Tests passing
+Knowledge artifacts captured
+Performance benchmarks documented
+Team retrospective conducted
 
-Checks Critical Path Issues: Verifies that all critical path issues for the phase are closed.
-Validates Phase Exit Checklist: Checks if the phase exit checklist exists and items are checked off.
-Ensures Knowledge Artifacts: Confirms that phase completion documentation exists.
-
-Phase Completion Documentation
-For each phase, create a phase completion document in knowledge/learned-lessons/phase_X_completion.md (where X is the phase number). The script can generate a template for you if one doesn't exist.
-Moving to the Next Phase
-
-Update README Badge: Change the phase badge in the README to reflect the new phase.
-Create New Milestones: If not already done, create milestones for the next phase.
-Plan Critical Path Issues: Create and assign critical path issues for the next phase.
+Use the exit checklist issue automatically created with each phase to track completion.
