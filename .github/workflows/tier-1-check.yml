@@ -1,0 +1,106 @@
+name: Tier -1 CI Check
+
+on:
+  push:
+    paths:
+      - 'pipelines/liu_wei_2024/tier_-1/**'
+  pull_request:
+    paths:
+      - 'pipelines/liu_wei_2024/tier_-1/**'
+  workflow_dispatch:
+
+jobs:
+  tier-1-validation:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./pipelines/liu_wei_2024/tier_-1
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install yamllint
+      
+      - name: Validate directory structure
+        run: |
+          echo "Validating directory structure..."
+          for dir in configs data docker docs report results scripts tests; do
+            if [ ! -d "$dir" ]; then
+              echo "Error: Required directory '$dir' is missing"
+              exit 1
+            fi
+          done
+          echo "Directory structure validation passed"
+      
+      - name: Validate config files
+        run: |
+          echo "Validating config files..."
+          yamllint configs/*.yaml
+          echo "Config validation passed"
+      
+      - name: Run orchestrator in dry-run mode
+        run: |
+          echo "Testing orchestrator with dry-run flag..."
+          bash scripts/run_preprocessing_integration.sh --tier -1 --dry-run
+          
+          # Verify provenance files were created
+          if [ -z "$(ls -A data/provenance/ 2>/dev/null)" ]; then
+            echo "Error: No provenance files generated"
+            exit 1
+          fi
+          echo "Orchestrator dry-run test passed"
+      
+      - name: Test Python scripts with dry-run
+        run: |
+          echo "Testing Python scripts with dry-run..."
+          for script in scripts/*_main.py; do
+            echo "Testing $script..."
+            if ! python3 "$script" --dry-run; then
+              echo "Error: $script failed dry-run test"
+              exit 1
+            fi
+          done
+          echo "Python script dry-run tests passed"
+      
+      - name: Test Bash scripts with dry-run
+        run: |
+          echo "Testing Bash scripts with dry-run..."
+          for script in scripts/*_run_*.sh; do
+            echo "Testing $script..."
+            if ! bash "$script" --dry-run; then
+              echo "Error: $script failed dry-run test"
+              exit 1
+            fi
+          done
+          echo "Bash script dry-run tests passed"
+      
+      - name: Check for prohibited imports
+        run: |
+          echo "Checking for prohibited imports..."
+          if grep -r "from common import" --include="*.py" scripts/; then
+            echo "Error: Prohibited import from common/ found"
+            exit 1
+          fi
+          if grep -r "import common" --include="*.py" scripts/; then
+            echo "Error: Prohibited import of common/ found"
+            exit 1
+          fi
+          echo "Import validation passed"
+      
+      - name: Verify CHANGELOG.md
+        run: |
+          echo "Checking for CHANGELOG.md..."
+          if [ ! -f "CHANGELOG.md" ]; then
+            echo "Error: CHANGELOG.md is missing"
+            exit 1
+          fi
+          echo "CHANGELOG.md verification passed"
